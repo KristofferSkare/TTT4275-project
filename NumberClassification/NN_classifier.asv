@@ -1,0 +1,23 @@
+
+k = 3;
+%chunk_size = 1000;
+num_lab = 10;
+
+data_set = trainv(1:1000,:);
+test_point = testv(1,:)';
+
+
+D = dist(data_set, test_point);
+[min_d, I] = mink(D,k);
+
+label_count = zeros(num_lab,1);
+
+for i = I
+    label_count()
+end
+
+
+
+%% Plotting an image:
+%x = zeros(col_size, row_size); x(:) = trainv(1,:);
+%image(x);

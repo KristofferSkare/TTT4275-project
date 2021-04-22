@@ -1,4 +1,4 @@
-
+load("data_all.mat");
 chunk_size = 1000;
 num_chunks = num_train/chunk_size;
 
@@ -14,7 +14,7 @@ for j = 1:num_chunks
 
 template_set = trainv((j-1)*chunk_size + 1: j*chunk_size,:);
 
-D = dist(template_set, test_set'); % Finding distance between data_set and the point
+D = dist(template_set, test_set');
 [min_d, I] = min(D,[],1); 
 
 distances(:,j) = min_d';

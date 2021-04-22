@@ -1,23 +1,35 @@
 
-k = 3;
-%chunk_size = 1000;
+
+N = 10;
+chunk_size = 1000;
+num_chunks = num_train/chunk_size;
 num_lab = 10;
 
-data_set = trainv(1:1000,:);
-test_point = testv(1,:)';
+data_set = trainv(:,:);
+label_results = zeros(num_test,1);
+test_set = testv(:,:);
 
+distances = zeros(num_test,num_chunks);
+indices = zeros(num_test,num_chunks);
 
-D = dist(data_set, test_point);
-[min_d, I] = mink(D,k);
+for j = 1:num_chunks
 
-label_count = zeros(num_lab,1);
+data_set = trainv((j-1)*chunk_size + 1: j*chunk_size,:);
 
-for i = I
-    label_count()
+D = dist(data_set, test_set'); % Finding distance between data_set and the point
+[min_d, I] = min(D,[],1); %Finding the indexes of the k smallest distances
+
+distances()
 end
 
+final_lab_res = mode(label_results,1);
 
-
-%% Plotting an image:
-%x = zeros(col_size, row_size); x(:) = trainv(1,:);
-%image(x);
+% %% Plotting an image:
+% for i = 1:N
+%     if label_results(i,1) == label_results(i,2)
+%         x = zeros(row_size, col_size); x(:) = trainv(i,:);
+%         image(x);
+%         title("Is: " + label_results(i,1) + " classified as: " + label_results(i,2))
+%         input("");
+%     end
+% end

@@ -1,37 +1,31 @@
 
-k = 1;
-N = 1;
-%chunk_size = 1000;
-num_lab = 10;
+chunk_size = 1000;
+num_chunks = num_train/chunk_size;
+
+N = num_test;
 
 data_set = trainv(:,:);
-label_results = zeros(N,3);
+test_set = testv(1:N,:);
+label_results = zeros(N,1);
+distances = zeros(N,num_chunks);
+indices = zeros(N,num_chunks);
 
-for j = 1:N
-test_point = testv(j,:)';
+for j = 1:num_chunks
 
-D = dist(data_set, test_point); % Finding distance between data_set and the point
-[min_d, I] = mink(D,k); %Finding the indexes of the k smallest distances
+template_set = trainv((j-1)*chunk_size + 1: j*chunk_size,:);
 
-label_count = zeros(num_lab,1);
+D = dist(template_set, test_set'); % Finding distance between data_set and the point
+[min_d, I] = min(D,[],1); 
 
-for i = I
-    label_count(trainlab(i) + 1) = label_count(trainlab(i)+ 1) + 1; % Counting the labels of the training data with least distance
+distances(:,j) = min_d';
+indices(:,j) = I';
 end
 
-[max_lab_count, lab_res] = max(label_count); % Checking the label "vote"
-lab_res = lab_res - 1;
+[global_min, global_I] = min(distances, [],2);
 
-label_results(j,:) = [testlab(j);lab_res; j]; % Saving result
+for i = 1:N 
+    chunk_num = global_I(i);
+    label_results(i) = trainlab(indices(i, chunk_num) + chunk_size*(chunk_num - 1));
 end
 
 
-% %% Plotting an image:
-for i = 1:N
-    if label_results(i,1) == label_results(i,2)
-        x = zeros(row_size, col_size); x(:) = trainv(label_results(i,3),:);
-        image(x);
-        title("")
-        input("Is: " + label_results(i,1) + " classified as: " + label_results(i,2));
-    end
-end

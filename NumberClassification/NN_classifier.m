@@ -9,7 +9,7 @@ test_set = testv(1:N,:);
 label_results = zeros(N,1);
 distances = zeros(N,num_chunks);
 indices = zeros(N,num_chunks);
-
+tic
 for j = 1:num_chunks
 
 template_set = trainv((j-1)*chunk_size + 1: j*chunk_size,:);
@@ -27,5 +27,7 @@ for i = 1:N
     chunk_num = global_I(i);
     label_results(i) = trainlab(indices(i, chunk_num) + chunk_size*(chunk_num - 1));
 end
+toc
 
+save("NN_result.mat", "label_results");
 

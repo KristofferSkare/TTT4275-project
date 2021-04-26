@@ -16,19 +16,19 @@ end
 
 %% Plot miss classified images
 
-for i = miss_class_indecies
-     x = zeros(row_size, col_size); x(:) = testv(i,:);
-    image(x);
-    title("Is: " + testlab(i) + " classified as: " + label_results(i))
-    input("");
-end 
+% for i = miss_class_indecies
+%      x = zeros(row_size, col_size); x(:) = testv(i,:);
+%     image(x');
+%     title("Is " + testlab(i) + ", but classified as " + label_results(i))
+%     input("");
+% end 
 
 %% Plott correctly classified images
-
+% 
 for i = corr_class_indecies
      x = zeros(row_size, col_size); x(:) = testv(i,:);
-    image(x);
-    title("Is: " + testlab(i) + " classified as: " + label_results(i))
+    image(x');
+    title("Correctly classified as " + label_results(i))
     input("");
 end 
 

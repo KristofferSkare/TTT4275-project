@@ -1,4 +1,5 @@
 load("data_all");
+tic
 sorted_training_set = {};
 count_per_class = zeros(1,10);
 
@@ -11,5 +12,5 @@ for i = 1:num_train
     count_per_class(label+1) =  count_per_class(label+1) + 1;
     sorted_training_set{label + 1}(:,count_per_class(label+1)) = trainv(i,:)'; 
 end
-
+toc
 save("sorted_trainv.mat", "sorted_training_set");

@@ -1,21 +1,17 @@
-load("data_all.mat");
+load('data_all.mat');
 chunk_size = 1000;
 num_chunks = num_train/chunk_size;
 
-N = num_test;
+label_results = zeros(num_test,1);
+distances = zeros(num_test,num_chunks);
+indices = zeros(num_test,num_chunks);
 
-data_set = trainv(:,:);
-test_set = testv(1:N,:);
-label_results = zeros(N,1);
-distances = zeros(N,num_chunks);
-indices = zeros(N,num_chunks);
-tic
 for j = 1:num_chunks
 
 template_set = trainv((j-1)*chunk_size + 1: j*chunk_size,:);
 
-D = dist(template_set, test_set');
-[min_d, I] = min(D,[],1); 
+D = dist(template_set, testv');
+[min_d, I] = min(D,[],1);
 
 distances(:,j) = min_d';
 indices(:,j) = I';
@@ -27,7 +23,6 @@ for i = 1:N
     chunk_num = global_I(i);
     label_results(i) = trainlab(indices(i, chunk_num) + chunk_size*(chunk_num - 1));
 end
-toc
 
 save("NN_result.mat", "label_results");
 
